@@ -1,17 +1,37 @@
 package br.com.controledoacoes.ui;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.sql.SQLException;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 import br.com.controledoacoes.dao.ItemDAO;
 import br.com.controledoacoes.model.Item;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.sql.SQLException;
 
 public class TelaItens extends JFrame {
 
     private final JTextField txtNome = new JTextField();
-    private final JTextField txtCategoria = new JTextField();
+    private final JComboBox<String> cbCategoria = new JComboBox<>(new String[]{
+        "Alimentos",
+        "Roupas",
+        "Higiene",
+        "Limpeza",
+        "Móveis",
+        "Utensílios",
+        "Outros"
+});
+
 
     private final DefaultTableModel modelo = new DefaultTableModel(
             new Object[]{"ID", "Nome", "Categoria", "Estoque"}, 0
@@ -37,7 +57,7 @@ public class TelaItens extends JFrame {
         formulario.add(new JLabel("Nome:"));
         formulario.add(txtNome);
         formulario.add(new JLabel("Categoria:"));
-        formulario.add(txtCategoria);
+        formulario.add(cbCategoria);
 
         JButton btnCadastrar = new JButton("Cadastrar");
         JButton btnAtualizar = new JButton("Atualizar");
@@ -61,7 +81,7 @@ public class TelaItens extends JFrame {
 
     private void cadastrar() {
         String nome = txtNome.getText().trim();
-        String categoria = txtCategoria.getText().trim();
+        String categoria = (String) cbCategoria.getSelectedItem();
 
         if (nome.isBlank() || categoria.isBlank()) {
             JOptionPane.showMessageDialog(this, "Informe nome e categoria.");
@@ -92,7 +112,7 @@ public class TelaItens extends JFrame {
         }
 
         String nome = txtNome.getText().trim();
-        String categoria = txtCategoria.getText().trim();
+        String categoria = (String) cbCategoria.getSelectedItem();
 
         if (nome.isBlank() || categoria.isBlank()) {
             JOptionPane.showMessageDialog(this, "Informe nome e categoria.");
@@ -180,13 +200,13 @@ public class TelaItens extends JFrame {
 
         if (linha != -1) {
             txtNome.setText(String.valueOf(modelo.getValueAt(linha, 1)));
-            txtCategoria.setText(String.valueOf(modelo.getValueAt(linha, 2)));
+            cbCategoria.setSelectedItem(String.valueOf(modelo.getValueAt(linha, 2)));
         }
     }
 
     private void limparCampos() {
         txtNome.setText("");
-        txtCategoria.setText("");
+        cbCategoria.setSelectedIndex(0);
         tabela.clearSelection();
         txtNome.requestFocus();
     }
