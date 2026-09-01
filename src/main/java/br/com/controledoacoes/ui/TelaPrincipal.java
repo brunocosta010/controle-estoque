@@ -5,28 +5,41 @@ import java.awt.*;
 
 public class TelaPrincipal extends JFrame {
 
+    private static final Font FONTE_BOTAO = new Font("SansSerif", Font.PLAIN, 16);
+
     public TelaPrincipal() {
-        setTitle("Controle de Doações");
-        setSize(520, 420);
+        setTitle("Sistema de Controle de Doações");
+        setSize(680, 480);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(false);
+        setMinimumSize(new Dimension(620, 430));
 
-        JPanel painel = new JPanel(new BorderLayout(10, 10));
-        painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        JPanel painel = new JPanel(new BorderLayout(20, 28));
+        painel.setBorder(BorderFactory.createEmptyBorder(35, 45, 40, 45));
 
-        JLabel titulo = new JLabel("SISTEMA DE CONTROLE DE DOAÇÕES", SwingConstants.CENTER);
-        titulo.setFont(new Font("SansSerif", Font.BOLD, 20));
-        painel.add(titulo, BorderLayout.NORTH);
+        JPanel cabecalho = new JPanel();
+        cabecalho.setLayout(new BoxLayout(cabecalho, BoxLayout.Y_AXIS));
 
-        JPanel botoes = new JPanel(new GridLayout(3, 2, 12, 12));
+        JLabel titulo = new JLabel("Sistema de Controle de Doações");
+        titulo.setFont(new Font("SansSerif", Font.BOLD, 26));
+        titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton btnDoadores = new JButton("Doadores");
-        JButton btnItens = new JButton("Itens");
-        JButton btnDoacoes = new JButton("Nova Doação");
-        JButton btnDistribuicoes = new JButton("Distribuição");
-        JButton btnEstoque = new JButton("Estoque");
-        JButton btnHistorico = new JButton("Histórico");
+        JLabel subtitulo = new JLabel("Cadastro, estoque e distribuição de itens");
+        subtitulo.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        subtitulo.setForeground(new Color(80, 80, 80));
+        subtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        cabecalho.add(titulo);
+        cabecalho.add(Box.createVerticalStrut(8));
+        cabecalho.add(subtitulo);
+
+        JPanel botoes = new JPanel(new GridLayout(3, 2, 16, 16));
+        JButton btnDoadores = criarBotao("Doadores");
+        JButton btnItens = criarBotao("Itens");
+        JButton btnDoacoes = criarBotao("Nova Doação");
+        JButton btnDistribuicoes = criarBotao("Distribuição");
+        JButton btnEstoque = criarBotao("Estoque");
+        JButton btnHistorico = criarBotao("Histórico");
 
         botoes.add(btnDoadores);
         botoes.add(btnItens);
@@ -35,6 +48,7 @@ public class TelaPrincipal extends JFrame {
         botoes.add(btnEstoque);
         botoes.add(btnHistorico);
 
+        painel.add(cabecalho, BorderLayout.NORTH);
         painel.add(botoes, BorderLayout.CENTER);
 
         btnDoadores.addActionListener(e -> new TelaDoadores().setVisible(true));
@@ -44,6 +58,15 @@ public class TelaPrincipal extends JFrame {
         btnEstoque.addActionListener(e -> new TelaEstoque().setVisible(true));
         btnHistorico.addActionListener(e -> new TelaHistorico().setVisible(true));
 
-        add(painel);
+        setContentPane(painel);
+    }
+
+    private JButton criarBotao(String texto) {
+        JButton botao = new JButton(texto);
+        botao.setFont(FONTE_BOTAO);
+        botao.setFocusPainted(false);
+        botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botao.setPreferredSize(new Dimension(240, 72));
+        return botao;
     }
 }
